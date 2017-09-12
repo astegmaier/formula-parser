@@ -393,4 +393,4 @@ const SUPPORTED_FORMULAS = [
   'IFERROR'
 ];
 
-export {SUPPORTED_FORMULAS as default};
+export default SUPPORTED_FORMULAS;
