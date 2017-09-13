@@ -20,7 +20,7 @@ class Parser extends Emitter {
       throwError: (errorName) => this._throwError(errorName),
       callVariable: (variable) => this._callVariable(variable),
       evaluateByOperator,
-      callFunction: evaluateByOperator,
+      callFunction: (name, params) => this._callFunction(name, params),
       cellValue: (value, sheet) => this._callCellValue(value, sheet),
       rangeValue: (start, end, sheet) => this._callRangeValue(start, end, sheet),
     };
