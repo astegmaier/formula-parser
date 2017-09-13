@@ -9,6 +9,10 @@ var config = {
       { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules|grammar\-parser\.js$/ }
     ]
   },
+  //fs: 'empty' was added to work around this issue: https://github.com/webpack-contrib/css-loader/issues/447
+  node: {
+    fs: 'empty'
+  },
   output: {
     library: 'formulaParser',
     libraryTarget: 'umd'
