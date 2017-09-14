@@ -202,7 +202,13 @@ case 21:
 break;
 case 22:
 
-      this.$ = yy.callFunction($$[$0-3], $$[$0-1]);
+      var paramsArray = [];
+      var rawParamsArray = [];
+      $$[$0-1].forEach( function (value) {
+        paramsArray.push(value[0]);
+        rawParamsArray.push(value[1]);
+      });
+       this.$ = yy.callFunction($$[$0-3], paramsArray, rawParamsArray);
     
 break;
 case 23:
@@ -262,15 +268,20 @@ case 46: case 47: case 48: case 49: case 50: case 51: case 52: case 53: case 54:
       this.$ = yy.rangeValue($$[$0-2], $$[$0], $$[$0-4]);
     
 break;
-case 55: case 58:
+case 55:
 
-      this.$ = [$$[$0]];
+      this.$ = [[$$[$0], yy.lexer.matched.substring(_$[$0].first_column, _$[$0].last_column)]];
     
 break;
 case 56: case 57:
 
-      $$[$0-2].push($$[$0]);
+      $$[$0-2].push([$$[$0], yy.lexer.matched.substring(_$[$0].first_column, _$[$0].last_column)]);
       this.$ = $$[$0-2];
+    
+break;
+case 58:
+
+      this.$ = [$$[$0]];
     
 break;
 case 59:

@@ -144,7 +144,13 @@ expression
       $$ = yy.callFunction($1);
     }
   | FUNCTION '(' expseq ')' {
-      $$ = yy.callFunction($1, $3);
+      var paramsArray = [];
+      var rawParamsArray = [];
+      $3.forEach( function (value) {
+        paramsArray.push(value[0]);
+        rawParamsArray.push(value[1]);
+      });
+       $$ = yy.callFunction($1, paramsArray, rawParamsArray);
     }
   | ARRAYCONSTANT {
       var result = [];
@@ -268,14 +274,14 @@ refRange
 
 expseq
   : expression {
-      $$ = [$1];
+      $$ = [[$1, yy.lexer.matched.substring(@1.first_column, @1.last_column)]];
     }
   | expseq ';' expression {
-      $1.push($3);
+      $1.push([$3, yy.lexer.matched.substring(@3.first_column, @3.last_column)]);
       $$ = $1;
     }
   | expseq ',' expression {
-      $1.push($3);
+      $1.push([$3, yy.lexer.matched.substring(@3.first_column, @3.last_column)]);
       $$ = $1;
     }
 ;

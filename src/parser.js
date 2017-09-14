@@ -20,7 +20,7 @@ class Parser extends Emitter {
       throwError: (errorName) => this._throwError(errorName),
       callVariable: (variable) => this._callVariable(variable),
       evaluateByOperator,
-      callFunction: (name, params) => this._callFunction(name, params),
+      callFunction: (name, params, rawParams) => this._callFunction(name, params, rawParams),
       cellValue: (value, sheet) => this._callCellValue(value, sheet),
       rangeValue: (start, end, sheet) => this._callRangeValue(start, end, sheet),
     };
@@ -147,12 +147,12 @@ class Parser extends Emitter {
    * @returns {*}
    * @private
    */
-  _callFunction(name, params = []) {
+  _callFunction(name, params = [], rawParams) {
     const fn = this.getFunction(name);
     let value;
-
+    
     if (fn) {
-      value = fn(params);
+      value = fn(params, rawParams);
     }
 
     this.emit('callFunction', name, params, (newValue) => {
