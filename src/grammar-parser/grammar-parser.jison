@@ -20,7 +20,7 @@
 [A-Za-z_]+                                                                                      {return 'VARIABLE';}
 [0-9]+                                                                                          {return 'NUMBER';}
 '['([\w\,\;]*)?']'                                                                              {return 'ARRAY';}
-'{'([\w\,\;\"\.]*)?'}'                                                                              {return 'ARRAYCONSTANT';}
+'{'([\w\,\;\"\.]*)?'}'                                                                          {return 'ARRAYCONSTANT';}
 "&"                                                                                             {return '&';}
 " "                                                                                             {return ' ';}
 [.]                                                                                             {return 'DECIMAL';}
