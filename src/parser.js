@@ -150,7 +150,7 @@ class Parser extends Emitter {
   _callFunction(name, params = [], rawParams) {
     const fn = this.getFunction(name);
     let value;
-    
+
     if (fn) {
       value = fn(params, rawParams);
     }
