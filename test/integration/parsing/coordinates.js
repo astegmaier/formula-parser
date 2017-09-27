@@ -17,6 +17,16 @@ describe('.parse() coordinates', () => {
         return;
       }
 
+      if (_cellCoord.dotrefs === 'myField') {
+        done(77);
+        return;
+      }
+
+      if (_cellCoord.dotrefs === 'My Field') {
+        done(88);
+        return;
+      }
+
       done(55);
     });
     parser.on('callRangeValue', (_startCellCoord, _endCellCoord, done) => {

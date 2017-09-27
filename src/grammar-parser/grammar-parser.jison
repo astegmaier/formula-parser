@@ -21,6 +21,8 @@
 [0-9]+                                                                                          {return 'NUMBER';}
 '['([\w\,\;]*)?']'                                                                              {return 'ARRAY';}
 '{'([\w\,\;\"\.]*)?'}'                                                                          {return 'ARRAYCONSTANT';}
+[.][A-Za-z_\d]+                                                                                 {return 'DOTREFERENCE';}
+[.][[][A-Za-z_\d\s]+[\]]                                                                        {return 'DOTREFERENCE_BRACKETS';}
 "&"                                                                                             {return '&';}
 " "                                                                                             {return ' ';}
 [.]                                                                                             {return 'DECIMAL';}
@@ -181,7 +183,9 @@ expression
       $$ = result;
   }
   | cell
+  | cellDotRef
   | refCell
+  | refCellDotRef
   | range
   | refRange
   | error
@@ -200,6 +204,18 @@ cell
     }
   ;
 
+cellDotRef
+  : ABSOLUTE_CELL dotRefSequence {
+      $$ = yy.cellValue($1, undefined, $2);
+    }
+  | RELATIVE_CELL dotRefSequence {
+      $$ = yy.cellValue($1, undefined, $2);
+    }
+  | MIXED_CELL dotRefSequence {
+      $$ = yy.cellValue($1, undefined, $2);
+    }
+  ;
+
 refCell
   : REFSHEET '!' ABSOLUTE_CELL {
       $$ = yy.cellValue($3, $1);
@@ -209,6 +225,18 @@ refCell
     } 
   | REFSHEET '!' MIXED_CELL {
     $$ = yy.cellValue($3, $1);
+  }
+;
+
+refCellDotRef
+  : REFSHEET '!' ABSOLUTE_CELL dotRefSequence {
+      $$ = yy.cellValue($3, $1, $4);
+    }
+  | REFSHEET '!' RELATIVE_CELL dotRefSequence {
+      $$ = yy.cellValue($3, $1, $4);
+    } 
+  | REFSHEET '!' MIXED_CELL dotRefSequence {
+    $$ = yy.cellValue($3, $1, $4);
   }
 ;
 
@@ -294,6 +322,25 @@ variableSequence
       $$ = (Array.isArray($1) ? $1 : [$1]);
       $$.push($3);
     }
+;
+
+dotRefSequence
+    : dotRef {
+        $$ = [$1];
+      }
+    | dotRefSequence dotRef {
+        $1.push($2);
+        $$ = $1;
+      }
+;
+
+dotRef
+    : DOTREFERENCE {
+        $$ = $1.substring(1);
+      }
+    | DOTREFERENCE_BRACKETS {
+        $$ = $1.slice(2, -1);
+      }
 ;
 
 number
